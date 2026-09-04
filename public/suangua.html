@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>每日一卜· 传统文化体验</title>
+<style>
+  body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: radial-gradient(circle at 50% 20%, #2b1f47, #0d0d16 60%);
+    color: #e8e4ff;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    top: -20%;
+    left: -20%;
+    width: 140%;
+    height: 140%;
+    background: radial-gradient(circle, rgba(120,70,255,0.25), transparent 70%);
+    animation: aura 8s infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes aura {
+    0% { transform: rotate(0deg) scale(1); opacity: 0.6; }
+    100% { transform: rotate(360deg) scale(1.2); opacity: 0.9; }
+  }
+  .nav {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    padding: 22px 16px 4px;
+  }
+  .nav a {
+    color: #e8d49b;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 2px;
+    padding: 8px 18px;
+    border: 1px solid rgba(255, 220, 120, 0.3);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.04);
+    transition: all .3s;
+    cursor: pointer;
+    user-select: none;
+  }
+  .nav a:hover,
+  .nav a.active {
+    background: linear-gradient(135deg, #caa86a, #e8d49b);
+    color: #2b1f47;
+    box-shadow: 0 0 15px rgba(255, 220, 120, 0.5);
+  }
+  .page {
+    display: none;
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 30px auto 50px;
+    padding: 30px;
+    background: rgba(20, 10, 40, 0.55);
+    border-radius: 20px;
+    border: 2px solid rgba(255, 220, 120, 0.3);
+    box-shadow: 0 0 25px rgba(255, 200, 120, 0.25);
+    backdrop-filter: blur(6px);
+    box-sizing: border-box;
+  }
+  #page-home { display: block; }
+  h1 {
+    text-align: center;
+    font-size: 27px;
+    letter-spacing: 4px;
+    color: #f7e9b5;
+    text-shadow: 0 0 12px rgba(255, 230, 150, 0.7);
+    margin: 6px 0 0;
+  }
+  .divider {
+    text-align: center;
+    margin: 16px 0 22px;
+    color: #d9c98f;
+    font-size: 16px;
+    letter-spacing: 6px;
+    opacity: 0.8;
+  }
+  .updated {
+    text-align: center;
+    color: #b8b0d0;
+    font-size: 13px;
+    margin-bottom: 18px;
+  }
+  h2 {
+    font-size: 17px;
+    color: #f7e9b5;
+    letter-spacing: 2px;
+    margin: 24px 0 8px;
+    border-left: 3px solid #caa86a;
+    padding-left: 10px;
+  }
+  p, li {
+    font-size: 14px;
+    line-height: 1.9;
+    color: #e8e4ff;
+  }
+  ul { padding-left: 20px; }
+  label {
+    display: block;
+    margin-top: 18px;
+    font-size: 15px;
+    color: #f0eaff;
+  }
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 220, 120, 0.3);
+    background: rgba(255,255,255,0.08);
+    color: #f7f3ff;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+  select { color: #e8d49b; }
+  option { color: #e8d49b; background: #2b1f47; }
+  textarea { min-height: 70px; }
+  button {
+    margin-top: 22px;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #caa86a, #e8d49b);
+    color: #2b1f47;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(255, 220, 120, 0.5);
+    transition: all .3s;
+  }
+  button:hover {
+    background: linear-gradient(135deg, #e8d49b, #f7e9b5);
+    transform: translateY(-2px);
+  }
+  .result {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
+    border: 1px solid rgba(255, 220, 120, 0.25);
+    box-shadow: 0 0 15px rgba(255, 220, 120, 0.15);
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 14px;
+  }
+  .card {
+    padding: 16px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 220, 120, 0.25);
+    border-radius: 14px;
+    text-align: center;
+    box-shadow: 0 0 12px rgba(255, 220, 120, 0.12);
+    transition: transform .3s;
+  }
+  .card:hover { transform: translateY(-4px); }
+  .card .icon { font-size: 26px; }
+  .card .name { font-size: 15px; color: #f7e9b5; margin: 8px 0 4px; letter-spacing: 1px; }
+  .card .desc { font-size: 12px; color: #b8b0d0; line-height: 1.7; }
+  .slogan {
+    text-align: center;
+    font-size: 16px;
+    color: #f7e9b5;
+    letter-spacing: 3px;
+    margin: 22px 0 6px;
+    text-shadow: 0 0 10px rgba(255, 230, 150, 0.5);
+  }
+  .note {
+    margin-top: 20px;
+    padding: 14px 16px;
+    background: rgba(255, 220, 120, 0.08);
+    border: 1px solid rgba(255, 220, 120, 0.3);
+    border-radius: 12px;
+    font-size: 13px;
+    color: #d9c98f;
+  }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 220, 120, 0.25);
+    border-radius: 14px;
+  }
+  .contact-item .icon { font-size: 24px; }
+  .contact-item .label { font-size: 13px; color: #d9c98f; }
+  .contact-item .value { font-size: 15px; color: #f7f3ff; margin-top: 2px; }
+  .msg-ok {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(255, 220, 120, 0.08);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 220, 120, 0.3);
+    color: #f7e9b5;
+    font-size: 14px;
+    text-align: center;
+    display: none;
+  }
+  .footer {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: #b8b0d0;
+  }
+  /* ===== 广告位预留 ===== */
+  .ad-slot {
+    margin: 18px auto;
+    width: 100%;
+    min-height: 64px;
+    border: 1px dashed rgba(255, 220, 120, 0.35);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #9a90b8;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+  .ad-tag {
+    padding: 14px 10px;
+    line-height: 1.7;
+  }
+  .ad-side {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 120px;
+    min-height: 260px;
+    border: 1px dashed rgba(255, 220, 120, 0.35);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #9a90b8;
+    font-size: 12px;
+    text-align: center;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+    line-height: 1.8;
+  }
+  #ad-left { left: 16px; }
+  #ad-right { right: 16px; }
+  @media (max-width: 1280px) {
+    .ad-side { display: none; }
+  }
+  /* ===== 合规声明 ===== */
+  .compliance-note {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: rgba(255, 220, 120, 0.07);
+    border: 1px solid rgba(255, 220, 120, 0.25);
+    border-radius: 10px;
+    color: #d9c98f;
+    font-size: 12px;
+    text-align: center;
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+  .disclaimer-top {
+    text-align: center;
+    color: #d9c98f;
+    font-size: 13px;
+    letter-spacing: 1px;
+    margin: 0 0 6px;
+    opacity: 0.9;
+    line-height: 1.7;
+  }
+  .icp-note {
+    text-align: center;
+    font-size: 12px;
+    color: #9a90b8;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+  <!-- 左右两侧广告位（桌面端固定显示，移动端自动隐藏） -->
+  <div class="ad-side" id="ad-left">广告位 · 左侧竖幅<br>120×600<br><span style="color:#6b6390;font-size:11px;">在此粘贴广告代码</span></div>
+  <div class="ad-side" id="ad-right">广告位 · 右侧竖幅<br>120×600<br><span style="color:#6b6390;font-size:11px;">在此粘贴广告代码</span></div>
+  <div class="nav">
+    <a data-page="home" class="active">✦ 首页</a>
+    <a data-page="about">关于我们</a>
+    <a data-page="contact">联系我们</a>
+    <a data-page="privacy">隐私政策</a>
+  </div>
+
+  <!-- ============ 首页：命理推演 ============ -->
+  <section class="page" id="page-home">
+    <h1>每日一卜· 传统文化体验</h1>
+    <div class="divider">✦ ✦ ✦</div>
+    <div class="disclaimer-top">✦ 本系统为传统文化趣味体验，内容基于算法随机生成，仅供娱乐参考 ✦</div>
+    <label>姓名</label>
+    <input id="name" type="text">
+    <label>生日（用于星座）</label>
+    <input id="birthday" type="date">
+    <label>出生年份（用于生肖与干支年柱）</label>
+    <input id="birthyear" type="number">
+    <label>你想问的问题（可选）</label>
+    <textarea id="question"></textarea>
+    <label>体验类型</label>
+    <select id="type">
+      <option value="today">今日运势</option>
+      <option value="love">感情小测试</option>
+      <option value="career">事业小测试</option>
+      <option value="all">综合小测试</option>
+      <option value="tarot">塔罗牌测试</option>
+    </select>
+    <button id="btn">开始体验</button>
+    <div class="result" id="result"></div>
+    <!-- 广告位：结果下方 -->
+    <div class="ad-slot" id="ad-below-result"><div class="ad-tag">广告位 · 结果下方横幅<br>在此粘贴广告代码（如 728×90 自适应）</div></div>
+    <div class="footer">© 2026 玄学占卜殿 · 传统文化体验</div>
+    <div class="icp-note">ICP 备案号：＿＿＿＿＿＿＿＿（备案通过后填写）</div>
+  </section>
+
+  <!-- ============ 关于我们 ============ -->
+  <section class="page" id="page-about">
+    <h1>关于我们</h1>
+    <div class="divider">✦ ✦ ✦</div>
+
+    <h2>我们是谁</h2>
+    <p>「每日一卜· 传统文化体验」是一处融合传统命理文化与现代算法推演的数字道场。我们以星座、生肖、干支年柱与塔罗为媒，将流传千年的传统文化智慧，化作一盏照亮你前路的灵光。在这里，每一次推演都是一次与内心的对话。</p>
+
+    <h2>我们的理念</h2>
+    <p>心念决定气场，气场决定运势。我们相信，传统文化并非预言宿命，而是帮你照见当下的自己——看清所念、所惧、所愿，进而更从容地走向未来。玄学占卜殿愿做你旅程中的一束星光：指引方向，却从不替你做选择。</p>
+
+    <div class="slogan">✦ 顺应天时 · 洞察人心 · 明心见性 ✦</div>
+
+    <h2>我们的服务</h2>
+    <div class="cards">
+      <div class="card">
+        <div class="icon">☀</div>
+        <div class="name">今日运势</div>
+        <div class="desc">每日气息推演，顺时而行，静心养气。</div>
+      </div>
+      <div class="card">
+        <div class="icon">❤</div>
+        <div class="name">感情小测试</div>
+        <div class="desc">辨心、解缘，让情缘线更清明通透。</div>
+      </div>
+      <div class="card">
+        <div class="icon">⛰</div>
+        <div class="name">事业小测试</div>
+        <div class="desc">观事业宫气机，稳中求进，积蓄力量。</div>
+      </div>
+      <div class="card">
+        <div class="icon">☯</div>
+        <div class="name">综合小测试</div>
+        <div class="desc">运势全息推演，于过渡之门寻见新机。</div>
+      </div>
+      <div class="card">
+        <div class="icon">🃏</div>
+        <div class="name">塔罗牌测试</div>
+        <div class="desc">二十二张牌面，映照心念起伏与抉择。</div>
+      </div>
+    </div>
+
+    <h2>文化溯源</h2>
+    <p>我们的推演体系，取材于东方命理文化中的生肖纪年、干支年柱与西方塔罗文化中的经典牌义，并加以通俗化、趣味化呈现。让每一位访客都能以轻松的方式，触摸传统文化的魅力，也读懂自己心底的声音。</p>
+
+    <h2>我们的承诺</h2>
+    <ul>
+      <li><b>尊重隐私</b>：你的填写信息仅用于本次推演，详细规则见「隐私政策」。</li>
+      <li><b>理性陪伴</b>：所有推演结果仅供娱乐与自我探索参考，我们始终倡导理性看待。</li>
+      <li><b>用心服务</b>：我们会持续打磨推演体验，让每一次来访都更温暖、更有收获。</li>
+    </ul>
+
+    <!-- 广告位：关于我们页脚 -->
+    <div class="ad-slot" id="ad-footer-about"><div class="ad-tag">广告位 · 页脚横幅<br>在此粘贴广告代码（如 728×90 自适应）</div></div>
+    <div class="footer">© 2026 玄学占卜殿 · 传统文化体验</div>
+    <div class="icp-note">ICP 备案号：＿＿＿＿＿＿＿＿（备案通过后填写）</div>
+  </section>
+
+  <!-- ============ 联系我们 ============ -->
+  <section class="page" id="page-contact">
+    <h1>联系我们</h1>
+    <div class="divider">✦ ✦ ✦</div>
+
+    <h2>联系渠道</h2>
+    <div class="contact-item">
+      <div class="icon">✉</div>
+      <div>
+        <div class="label">邮箱</div>
+        <div class="value">hfddztz@gmail.com</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="icon">☎</div>
+      <div>
+        <div class="label">客服电话</div>
+        <div class="value">18998349359（服务时间 9:00 – 21:00）</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="icon">◈</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="icon">◉</div>
+      <div>
+        <div class="label">工作时间</div>
+        <div class="value">周一至周日 9:00 – 21:00，节假日无休</div>
+      </div>
+    </div>
+
+    <h2>在线留言</h2>
+    <p>如你对体验结果、网站功能或隐私政策有任何疑问、建议，欢迎填写下方留言，我们会在 1 个工作日内回复。</p>
+
+    <label>称呼</label>
+    <input id="contactName" type="text" placeholder="如何称呼你">
+    <label>联系方式</label>
+    <input id="contactWay" type="text" placeholder="邮箱或微信号">
+    <label>留言主题</label>
+    <select id="contactType">
+      <option value="feedback">功能建议</option>
+      <option value="question">体验咨询</option>
+      <option value="privacy">隐私相关问题</option>
+      <option value="other">其他</option>
+    </select>
+    <label>留言内容</label>
+    <textarea id="contactMsg" placeholder="请写下你想说的话…"></textarea>
+    <button id="sendBtn">发送留言</button>
+    <div class="msg-ok" id="msgOk">✦ 感谢你的留言，我们会尽快与你取得联系 ✦</div>
+
+    <!-- 广告位：联系我们页脚 -->
+    <div class="ad-slot" id="ad-footer-contact"><div class="ad-tag">广告位 · 页脚横幅<br>在此粘贴广告代码（如 728×90 自适应）</div></div>
+    <div class="footer">© 2026 玄学占卜殿 · 传统文化体验</div>
+    <div class="icp-note">ICP 备案号：＿＿＿＿＿＿＿＿（备案通过后填写）</div>
+  </section>
+
+  <!-- ============ 隐私政策 ============ -->
+  <section class="page" id="page-privacy">
+    <h1>隐私政策</h1>
+    <div class="divider">✦ ✦ ✦</div>
+    <div class="updated">更新日期：2026 年 9 月 · 生效日期：2026 年 9 月</div>
+
+    <h2>一、引言</h2>
+    <p>欢迎使用「每日一卜· 传统文化体验」（以下简称“本网站”）。我们深知个人信息对你的重要性，将严格按照法律法规要求，采取合理的安全保护措施，尽力保护你的个人信息安全可控。</p>
+    <p>请在使用本网站服务前，仔细阅读并了解本隐私政策。当你开始使用本网站即视为你已阅读、理解并同意本政策。</p>
+
+    <h2>二、我们收集的信息</h2>
+    <ul>
+      <li><b>你主动填写的信息</b>：姓名、出生日期、出生年份、体验问题内容等（用于生成运势、星座、生肖、干支年柱与塔罗推演结果）。</li>
+      <li><b>使用信息</b>：你选择的体验类型等操作记录（仅用于为你呈现对应服务）。</li>
+    </ul>
+
+    <h2>三、信息的使用</h2>
+    <ul>
+      <li>用于生成并展示你所需的体验、趣味体验结果；</li>
+      <li>用于改进与优化本网站的使用体验；</li>
+      <li>未经你的同意，不会将上述信息用于本政策未载明的其他用途。</li>
+    </ul>
+
+    <h2>四、信息的存储与保护</h2>
+    <p>你填写的体验信息仅在本次页面会话中使用，我们采用合理的技术与管理措施保护信息安全，防止信息被未经授权的访问、使用或泄露。</p>
+
+    <h2>五、信息的共享与披露</h2>
+    <p>我们不会出售、出租或以其他方式向第三方提供你的个人信息。仅在以下情形下，可能依法披露相关信息：</p>
+    <ul>
+      <li>事先获得你的明确授权或同意；</li>
+      <li>依据法律法规、司法或行政机关的强制性要求。</li>
+    </ul>
+
+    <h2>六、免责声明</h2>
+    <p>本网站所生成的运势、星座、生肖、八字及塔罗结果均基于算法随机生成，<b>仅供休闲娱乐与自我探索参考</b>，不构成任何医疗、法律、投资、职业规划等专业建议。请理性看待体验结果，切勿因此做出重大决策。</p>
+
+    <h2>七、你的权利</h2>
+    <ul>
+      <li>有权了解我们收集与使用你信息的方式；</li>
+      <li>有权要求更正或删除你提供的信息；</li>
+      <li>有权撤回此前对信息使用的同意。</li>
+    </ul>
+
+    <h2>八、未成年人保护</h2>
+    <p>本网站服务主要面向成年人。如你是未成年人，请在监护人陪同和指导下使用本网站，并在监护人同意后再填写个人信息。</p>
+
+    <h2>九、本政策的更新</h2>
+    <p>我们可能适时对本隐私政策进行调整。政策更新后，我们会在本页面发布最新版本，并更新页面顶部的“更新日期”。建议你定期查阅。</p>
+
+    <h2>十、联系我们</h2>
+    <p>如你对本隐私政策或个人信息保护有任何疑问、意见或建议，欢迎通过联系我们页面中的渠道与我们取得联系。</p>
+
+    <div class="note">✦ 温馨提示：心念决定气场，气场决定运势。愿你在每一次推演中更了解自己，也请始终保持理性与从容。</div>
+    <!-- 广告位：隐私政策页脚 -->
+    <div class="ad-slot" id="ad-footer-privacy"><div class="ad-tag">广告位 · 页脚横幅<br>在此粘贴广告代码（如 728×90 自适应）</div></div>
+    <div class="footer">© 2026 玄学占卜殿 · 传统文化体验</div>
+    <div class="icp-note">ICP 备案号：＿＿＿＿＿＿＿＿（备案通过后填写）</div>
+  </section>
+
+<script>
+/* ============ 页面切换 ============ */
+(function () {
+  var navLinks = document.querySelectorAll(".nav a");
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function () {
+      var pageId = link.getAttribute("data-page");
+      document.querySelectorAll(".page").forEach(function (s) { s.style.display = "none"; });
+      document.getElementById("page-" + pageId).style.display = "block";
+      navLinks.forEach(function (a) { a.classList.remove("active"); });
+      link.classList.add("active");
+      window.scrollTo(0, 0);
+    });
+  });
+})();
+
+/* ============================
+   1. 塔罗牌系统
+   ============================ */
+const tarotCards = [
+  { name: "愚者", upright: "新的气息正在靠近，你的心若愿意迈出一步，命运便会回应。",
+    reversed: "你的念头过于散乱，若不稳住心神，机会会从指缝溜走。" },
+  { name: "魔术师", upright: "你的意念正在成形，行动会带来显化。",
+    reversed: "力量未聚，心念分散，需先整顿自身。" },
+  { name: "女祭司", upright: "直觉之门开启，静心可得答案。",
+    reversed: "内心有迷雾，暂不宜做重大判断。" },
+  { name: "女皇", upright: "丰盛之象显现，宜滋养、宜创造。",
+    reversed: "能量外散，需先补足自身。" },
+  { name: "皇帝", upright: "权柄在握，宜果断行动。",
+    reversed: "控制欲过强，需学会放手。" },
+  { name: "教皇", upright: "贵人之象，宜求助、宜学习。",
+    reversed: "固执成障，需打破旧框架。" },
+  { name: "恋人", upright: "心念相合之象显现，关系将迎来契机。",
+    reversed: "情绪有遮蔽，需先辨心，再谈选择。" },
+  { name: "战车", upright: "前进之力强劲，宜主动争取。",
+    reversed: "方向不稳，行动易失准。" },
+  { name: "力量", upright: "内心之力正在觉醒，你比自己想象更强。",
+    reversed: "心力不足，需先修复情绪。" },
+  { name: "隐者", upright: "宜独处、宜思考，答案在你心中。",
+    reversed: "过度退缩，需重新面对现实。" },
+  { name: "命运之轮", upright: "命运正在转动，顺势而为可得好运。",
+    reversed: "时机未到，宜等待。" },
+  { name: "正义", upright: "因果分明，宜做正确之事。",
+    reversed: "判断易偏差，需谨慎。" },
+  { name: "倒吊人", upright: "换个角度看世界，会有新发现。",
+    reversed: "过度牺牲，需重新评估。" },
+  { name: "死亡", upright: "旧事将终，新事将起，是重生的象征。",
+    reversed: "你在拖延结束，需勇敢放下。" },
+  { name: "节制", upright: "能量平衡，宜稳步推进。",
+    reversed: "失衡之象，需调整节奏。" },
+  { name: "恶魔", upright: "欲望之力强烈，宜保持清醒。",
+    reversed: "束缚正在松动，你有机会解脱。" },
+  { name: "塔", upright: "突变之象，旧结构将被打破。",
+    reversed: "变化延迟，但终将到来。" },
+  { name: "星星", upright: "希望之光照耀，你的愿望正在靠近。",
+    reversed: "信念动摇，需重新点亮内心。" },
+  { name: "月亮", upright: "直觉增强，但幻象亦多，宜辨心。",
+    reversed: "迷雾散去，真相将显。" },
+  { name: "太阳", upright: "大吉之象，光明正在照亮你的道路。",
+    reversed: "能量暂弱，但好运仍在靠近。" },
+  { name: "审判", upright: "觉醒之象，你将迎来重要决定。",
+    reversed: "犹豫过多，需听从内心。" },
+  { name: "世界", upright: "圆满之象，阶段将顺利完成。",
+    reversed: "未竟之事需补全。" }
+];
+function drawTarot() {
+  const card = tarotCards[Math.floor(Math.random() * tarotCards.length)];
+  const isUpright = Math.random() > 0.5;
+  return {
+    name: card.name,
+    position: isUpright ? "正位" : "逆位",
+    meaning: isUpright ? card.upright : card.reversed
+  };
+}
+function generateTarotResult(name, question) {
+  const card = drawTarot();
+  const lucky = 60 + Math.floor(Math.random() * 41);
+  return `
+    <h3>${name} 的塔罗牌测试结果</h3>
+    <p>抽到的牌：${card.name}（${card.position}）</p>
+    <p>牌意：${card.meaning}</p>
+    ${question ? `<p>你心中所问：“${question}”</p>` : ""}
+    <p>塔罗幸运指数：${lucky} / 100</p>
+    <div class="compliance-note">✦ 以上内容仅供娱乐参考，不构成任何专业建议 ✦</div>
+  `;
+}
+/* ============================
+   2. 星座、生肖、八字系统
+   ============================ */
+const zodiac = ["鼠","牛","虎","兔","龙","蛇","马","羊","猴","鸡","狗","猪"];
+const heavenlyStems = ["甲","乙","丙","丁","戊","己","庚","辛","壬","癸"];
+const earthlyBranches = ["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];
+const starSigns = [
+  ["摩羯座",1,19],["水瓶座",2,18],["双鱼座",3,20],["白羊座",4,19],
+  ["金牛座",5,20],["双子座",6,21],["巨蟹座",7,22],["狮子座",8,22],
+  ["处女座",9,22],["天秤座",10,23],["天蝎座",11,22],["射手座",12,21],
+  ["摩羯座",12,31]
+];
+function getStarSign(date) {
+  const d = new Date(date);
+  const month = d.getMonth() + 1;
+  const day = d.getDate();
+  for (let i = 0; i < starSigns.length; i++) {
+    const [sign, m, d2] = starSigns[i];
+    if (month === m && day <= d2) return sign;
+  }
+  return "未知星座";
+}
+function getZodiac(year) {
+  return zodiac[(year - 4) % 12];
+}
+function getYearPillar(year) {
+  const stem = heavenlyStems[(year - 4) % 10];
+  const branch = earthlyBranches[(year - 4) % 12];
+  return stem + branch;
+}
+/* ============================
+   3. 运势文案池
+   ============================ */
+const fortunes = {
+  today: [
+     "今日气息偏阴柔，宜静心养气，不宜争锋。",
+  "今日灵光微动，顺势而为，可得小喜。",
+  "今日煞气轻拂，凡事宜缓，切莫心急。",
+  "今日贵人星显，宜多听取建议。",
+  "今日心境宜静，勿躁动。",
+  "今日有小财运，宜谨慎收获。",
+  "今日宜修身养性，少言多思。",
+  "今日灵感闪现，适合创作。",
+  "今日宜低调行事，勿张扬。",
+  "今日宜积累能量，勿急功近利。",
+  "今日宜多观察，少行动。",
+  "今日宜顺势而为，勿逆流而行。",
+  "今日宜保持平衡，勿偏激。",
+  "今日宜多忍耐，少冲动。",
+  "今日宜静观其变，勿急于求成。",
+  "今日宜多思考，少言语。",
+  "今日宜积蓄力量，勿轻易耗散。",
+  "今日宜稳步前行，勿冒进。",
+  "今日宜保持冷静，勿慌乱。",
+  "今日宜多学习，少争辩。",
+  "今日宜守护初心，勿偏离。",
+  "今日宜多倾听，少表达。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多包容，少苛责。",
+  "今日宜稳中求进，勿急功近利。",
+  "今日宜多积累，少消耗。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多积累，少消耗。",
+  "今日宜稳中求进，勿冒进。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。",
+  "今日宜保持耐心，勿急躁。"
+  ],
+  love: [
+    "情缘线今日略有波动，心念若清，缘自会来。",
+  "旧情未散，新缘难入，需先断旧念，再迎新光。",
+  "心有灵犀，但缘分未到，宜顺其自然。",
+  "今日桃花暗动，宜真诚沟通。",
+  "今日感情宜稳，不宜急。",
+  "今日有暧昧之象，需谨慎分辨。",
+  "今日宜自省，先爱自己。",
+  "今日缘分未至，耐心等待。",
+  "今日宜修心养性，勿执念。",
+  "今日宜顺势而为，缘来缘去皆有时。",
+  "今日宜多倾听，少争辩。",
+  "今日宜表达真心，不宜隐瞒。",
+  "今日宜珍惜眼前人。",
+  "今日宜放下执念，迎接新缘。",
+  "今日宜温柔以待，勿冷漠。",
+  "今日宜主动沟通，化解误会。",
+  "今日宜保持耐心，勿急于表白。",
+  "今日宜真诚相待，勿虚伪。",
+  "今日宜守护感情，勿轻易放弃。",
+  "今日宜理解包容，勿苛责。",
+  "今日宜多陪伴，少忽视。",
+  "今日宜表达关怀，勿冷淡。",
+  "今日宜稳固关系，勿动摇。",
+  "今日宜信任彼此，勿猜疑。",
+  "今日宜温情互动，勿冷战。",
+  "今日宜共同成长，勿停滞。",
+  "今日宜珍惜缘分，勿轻视。",
+  "今日宜多体谅，少责怪。",
+  "今日宜保持浪漫，勿疏远。",
+  "今日宜真心付出，勿计较。",
+  "今日宜多沟通，少沉默。",
+  "今日宜守护承诺，勿违背。",
+  "今日宜温柔体贴，勿粗暴。",
+  "今日宜保持热情，勿冷却。",
+  "今日宜多理解，少误解。",
+  "今日宜珍惜陪伴，勿忽略。",
+  "今日宜真诚交流，勿敷衍。",
+  "今日宜稳步发展，勿急躁。",
+  "今日宜守护初心，勿偏离。",
+  "今日宜多关心，少冷漠。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜温情相伴，勿孤立。",
+  "今日宜共同努力，勿懈怠。",
+  "今日宜珍惜当下，勿后悔。",
+  "今日宜真心守护，勿放弃。",
+  "今日宜保持耐心，勿急功近利。",
+  "今日宜温柔以待，勿冷言冷语。",
+  "今日宜多沟通，少误会。",
+  "今日宜守护感情，勿轻易动摇。",
+  "今日宜真诚付出，勿虚情假意。"
+  ],
+  career: [
+     "事业宫今日有微光闪动，宜主动求变。",
+  "命盘显示你正处于积累期，暂不宜大动作。",
+  "贵人星隐约浮现，留意与你交谈之人。",
+  "今日宜学习新技能。",
+  "今日宜稳步推进，不宜冒进。",
+  "今日有小阻碍，需耐心。",
+  "今日适合整理计划。",
+  "今日宜低调行事。",
+  "今日宜积蓄力量，勿急于求成。",
+  "今日宜修心养性，稳中求进。",
+  "今日宜多观察，少行动。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多积累，少消耗。",
+  "今日宜稳中求进，勿冒进。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多积累，少消耗。",
+  "今日宜稳中求进，勿冒进。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。"
+  ],
+  all: [
+    "你的气场正在重组，旧事将散，新事将起。",
+  "命运之轮缓缓转动，你正处于过渡之门。",
+  "心念决定气场，气场决定运势。",
+  "今日宜顺势而为。",
+  "今日宜静观其变。",
+  "今日宜修心养性。",
+  "今日宜积累能量。",
+  "今日宜保持平衡。",
+  "今日宜自省，勿躁动。",
+  "今日宜低调行事，勿张扬。",
+  "今日宜守护初心，勿偏离。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多积累，少消耗。",
+  "今日宜稳中求进，勿冒进。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。",
+  "今日宜保持耐心，勿急躁。",
+  "今日宜多积累，少消耗。",
+  "今日宜稳中求进，勿冒进。",
+  "今日宜保持信念，勿动摇。",
+  "今日宜多沉淀，少张扬。",
+  "今日宜守护能量，勿浪费。",
+  "今日宜多观察，少干预。",
+  "今日宜保持平和，勿争斗。",
+  "今日宜多忍让，少冲突。",
+  "今日宜稳步发展，勿急于求成。",
+  "今日宜保持冷静，勿情绪化。",
+  "今日宜多思考，少行动。",
+  "今日宜守护心境，勿扰乱。"
+  ]
+};
+function getRandom(list) {
+  return list[Math.floor(Math.random() * list.length)];
+}
+/* ============================
+   4. 主逻辑（首页体验）
+   ============================ */
+document.getElementById("btn").addEventListener("click", () => {
+  const name = document.getElementById("name").value.trim();
+  const birthday = document.getElementById("birthday").value;
+  const birthyear = parseInt(document.getElementById("birthyear").value);
+  const question = document.getElementById("question").value.trim();
+  const type = document.getElementById("type").value;
+  if (!name || !birthday || !birthyear) {
+    alert("姓名、生日、出生年份都需要填写哦。");
+    return;
+  }
+  const resultBox = document.getElementById("result");
+  if (type === "tarot") {
+    resultBox.innerHTML = generateTarotResult(name, question);
+    return;
+  }
+  const star = getStarSign(birthday);
+  const animal = getZodiac(birthyear);
+  const pillar = getYearPillar(birthyear);
+  const fortune = getRandom(fortunes[type]);
+  const lucky = 60 + Math.floor(Math.random() * 41);
+  resultBox.innerHTML = `
+    <h3>${name} 的趣味体验结果</h3>
+    <p>星座：${star}</p>
+    <p>生肖：${animal}</p>
+    <p>干支年柱：${pillar}</p>
+    <p>体验提示：${fortune}</p>
+    ${question ? `<p>你心中所问：“${question}”</p>` : ""}
+    <p>幸运指数：${lucky} / 100</p>
+    <div class="compliance-note">✦ 以上内容仅供娱乐参考，不构成任何专业建议 ✦</div>
+  `;
+});
+
+/* ============================
+   5. 联系我们表单
+   ============================ */
+document.getElementById("sendBtn").addEventListener("click", () => {
+  const name = document.getElementById("contactName").value.trim();
+  const way = document.getElementById("contactWay").value.trim();
+  const msg = document.getElementById("contactMsg").value.trim();
+  if (!name || !way || !msg) {
+    alert("请填写称呼、联系方式与留言内容。");
+    return;
+  }
+  document.getElementById("msgOk").style.display = "block";
+});
+</script>
+</body>
+</html>
